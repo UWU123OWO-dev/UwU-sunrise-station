@@ -1,3 +1,6 @@
+# Sunrise-start
+# All Sunrise-specific changes are marked with this block.
+# Sunrise-end
 - type: entity
   name: deployable barrier
   id: DeployableBarrier
@@ -15,15 +18,19 @@
       map: ["enum.LockVisualLayers.Lock"]
   - type: Appearance
   - type: LockVisuals
-  # Sunrise edit - Добавлен Wall tag для корректной работы систем, проверяющих стены.
+  # Sunrise-start
+  # Added wall tag and interaction outline for compatibility with wall-based systems.
   - type: InteractionOutline
   - type: Tag
     tags:
     - Wall
-  # Sunrise edit - Включена физическая коллизия для проверки блокировки снарядов.
+  # Sunrise-end
+  # Sunrise-start
+  # Added physics component required for projectile interaction.
   - type: Physics
     bodyType: Dynamic
-    canCollide: true
+    canCollide: false
+  # Sunrise-end
   - type: Airtight
   - type: Fixtures
     fixtures:
@@ -34,7 +41,8 @@
         density: 75
         mask:
         - MachineMask
-      # Sunrise edit - Изменена коллизия барьера для более точного взаимодействия со снарядами.
+      # Sunrise-start
+      # Added a dedicated collision fixture for projectile blocking.
       barrier:
         shape:
           !type:PhysShapeAabb
@@ -44,11 +52,14 @@
         - SpecialWallLayer
         layer:
         - SpecialWallLayer
+      # Sunrise-end
   - type: DeployableBarrier
     fixture: barrier
-  # Sunrise edit - Добавлен Pierceable для корректного взаимодействия DeployableBarrier с системой пробития снарядов.
+  # Sunrise-start
+  # Added projectile penetration interaction support.
   - type: Pierceable
     level: Rock
+  # Sunrise-end
   - type: AccessReader
     access: [["Security"]]
   - type: Lock
@@ -56,7 +67,8 @@
     lockOnClick: true
     lockTime: 5
     unlockTime: 5
-  # Sunrise edit - Барьер получает урон от атак.
+  # Sunrise-start
+  # Added damage handling and armor modifiers so the barrier can receive and resist damage.
   - type: Damageable
     damageContainer: StructuralInorganic
     damageModifierSet: Metallic
@@ -68,11 +80,12 @@
         Slash: 0.2
         Heat: 0.4
         Caustic: 0.5
+  # Sunrise-end
   - type: Destructible
     thresholds:
     - trigger:
         !type:DamageTrigger
-        damage: 800
+        damage: 300
       behaviors:
       - !type:SpawnEntitiesBehavior
         spawn:
@@ -83,8 +96,7 @@
         sound:
           collection: MetalBreak
       - !type:DoActsBehavior
-        acts:
-        - Destruction
+        acts: [ "Destruction" ]
   - type: PointLight
     enabled: false
     radius: 3
