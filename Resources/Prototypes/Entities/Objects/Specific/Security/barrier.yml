@@ -77,18 +77,10 @@
     lockTime: 5
     unlockTime: 5
   # Sunrise-start
-  # Added damage handling and armor modifiers so the barrier can receive and resist damage.
+  # Added damage handling so the barrier can receive and resist damage.
   # This integrates with damage/Destructible flows in Sunrise (e.g. explosive vs ballistic interactions).
   - type: Damageable
     damageModifierSet: Metallic
-  - type: Armor
-    modifiers:
-      coefficients:
-        Piercing: 0.15
-        Blunt: 0.25
-        Slash: 0.2
-        Heat: 0.4
-        Caustic: 0.5
   # Sunrise-end
   - type: Injurable
     damageContainer: StructuralInorganic
